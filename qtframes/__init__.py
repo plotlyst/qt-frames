@@ -1,5 +1,6 @@
+from qthandy import vbox, clear_layout, margins
 from qtpy.QtCore import Qt, QRect
-from qtpy.QtGui import QPainter, QPen, QBrush, QPainterPath, QPaintEvent
+from qtpy.QtGui import QPainter, QPen, QBrush, QPainterPath, QPaintEvent, QResizeEvent
 from qtpy.QtWidgets import QWidget
 
 
@@ -8,6 +9,17 @@ class Frame(QWidget):
         super().__init__(parent)
         self._frameBorderWidth: int = 5
         self._nestedFrameBorderWidth: int = 2
+        self._heightPercent: float = 0.8
+
+        vbox(self, self._frameBorderWidth, 0)
+
+    def setWidget(self, widget):
+        clear_layout(self)
+        self.layout().addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
+        self._calculateMargins()
+
+    def resizeEvent(self, event: QResizeEvent) -> None:
+        self._calculateMargins()
 
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
@@ -18,7 +30,7 @@ class Frame(QWidget):
         pen.setWidth(self._frameBorderWidth)
         pen.setColor(Qt.GlobalColor.darkBlue)
         painter.setPen(pen)
-        painter.setBrush(Qt.GlobalColor.lightGray)
+        painter.setBrush(Qt.GlobalColor.white)
 
         rect = event.rect()
         rect.setX(self._frameBorderWidth)
@@ -52,3 +64,11 @@ class Frame(QWidget):
         path.lineTo(rect.topLeft())
 
         painter.drawPath(path)
+
+    def _calculateMargins(self):
+        if self.height():
+            bottom_margin = self.height() * (1 - self._heightPercent) + self._frameBorderWidth
+        else:
+            bottom_margin = self._frameBorderWidth
+        bottom_margin += self._nestedFrameBorderWidth
+        margins(self, self._frameBorderWidth, self._frameBorderWidth, self._frameBorderWidth, bottom=bottom_margin)
