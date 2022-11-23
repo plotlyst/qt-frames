@@ -1,8 +1,7 @@
 import sys
 
-from PySide6.QtWidgets import QLabel
 from qthandy import vbox
-from qtpy.QtWidgets import QMainWindow, QApplication, QWidget
+from qtpy.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QTextEdit
 
 from qtframes import Frame
 
@@ -15,7 +14,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.widget)
         frame = Frame()
         frame.setWidget(QLabel('Test label inside the frame'))
-        # frame.setWidget(QTextEdit())
+        frame.setWidget(QTextEdit())
         vbox(self.widget, 5)
         self.widget.layout().addWidget(frame)
 
