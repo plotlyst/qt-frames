@@ -1,6 +1,9 @@
 import sys
 
-from qtpy.QtWidgets import QMainWindow, QApplication, QWidget, QVBoxLayout
+from qthandy import vbox
+from qtpy.QtWidgets import QMainWindow, QApplication, QWidget
+
+from qtframes import Frame
 
 
 class MainWindow(QMainWindow):
@@ -9,8 +12,11 @@ class MainWindow(QMainWindow):
 
         self.widget = QWidget(self)
         self.setCentralWidget(self.widget)
-
-        self.widget.setLayout(QVBoxLayout())
+        frame = Frame()
+        # vbox(frame, 6)
+        # frame.layout().addWidget(QLabel('Test'))
+        vbox(self.widget, 5)
+        self.widget.layout().addWidget(frame)
 
 
 if __name__ == '__main__':
