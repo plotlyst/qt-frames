@@ -3,7 +3,7 @@ import sys
 from qthandy import vbox
 from qtpy.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QTextEdit
 
-from qtframes import Frame
+from qtframes import Frame, RoundedFrame
 
 
 class MainWindow(QMainWindow):
@@ -12,11 +12,15 @@ class MainWindow(QMainWindow):
 
         self.widget = QWidget(self)
         self.setCentralWidget(self.widget)
-        frame = Frame()
-        frame.setWidget(QLabel('Test label inside the frame'))
-        frame.setWidget(QTextEdit())
         vbox(self.widget, 5)
+        
+        frame = Frame()
+        frame.setWidget(QTextEdit())
         self.widget.layout().addWidget(frame)
+
+        roundedFrame = RoundedFrame()
+        roundedFrame.setWidget(QLabel('Test label inside the frame'))
+        self.widget.layout().addWidget(roundedFrame)
 
 
 if __name__ == '__main__':

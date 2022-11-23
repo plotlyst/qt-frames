@@ -4,12 +4,11 @@ from qtpy.QtGui import QPainter, QPen, QBrush, QPainterPath, QPaintEvent, QResiz
 from qtpy.QtWidgets import QWidget
 
 
-class Frame(QWidget):
+class _AbstractFrame(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._frameBorderWidth: int = 5
         self._nestedFrameBorderWidth: int = 2
-        self._heightPercent: float = 0.8
 
         vbox(self, self._frameBorderWidth, 0)
 
@@ -19,7 +18,7 @@ class Frame(QWidget):
         self._calculateMargins()
 
     def resizeEvent(self, event: QResizeEvent) -> None:
-        super(Frame, self).resizeEvent(event)
+        super().resizeEvent(event)
         self._calculateMargins()
 
     def paintEvent(self, event: QPaintEvent) -> None:
@@ -27,6 +26,7 @@ class Frame(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
         painter.setRenderHint(QPainter.RenderHint.LosslessImageRendering)
+
         pen = QPen()
         pen.setWidth(self._frameBorderWidth)
         pen.setColor(Qt.GlobalColor.darkBlue)
@@ -52,14 +52,54 @@ class Frame(QWidget):
         nested_rect.setHeight(nested_rect.height() - self._frameBorderWidth)
         self._drawFrame(painter, nested_rect)
 
+    def _calculateMargins(self):
+        pass
+
+    def _drawFrame(self, painter: QPainter, rect: QRect):
+        pass
+
+
+class Frame(_AbstractFrame):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._heightPercent: float = 0.8
+
     def _drawFrame(self, painter: QPainter, rect: QRect):
         path = QPainterPath()
         path.moveTo(self._frameBorderWidth, self._frameBorderWidth)
         path.lineTo(rect.topRight())
 
-        height = rect.height() * 0.8
+        height = rect.height() * self._heightPercent
         path.lineTo(rect.bottomRight().x(), height)
-        path.lineTo(rect.center().x(), rect.bottom() - 5)
+        path.lineTo(rect.center().x(), rect.bottom() - self._frameBorderWidth)
+        path.lineTo(rect.bottomLeft().x(), height)
+        path.lineTo(rect.topLeft())
+
+        painter.drawPath(path)
+
+    def _calculateMargins(self):
+        if self.height():
+            bottom_margin = self.height() * (1 - self._heightPercent) + self._frameBorderWidth * 2
+        else:
+            bottom_margin = self._frameBorderWidth
+
+        margins(self, self._frameBorderWidth * 2, self._frameBorderWidth * 2, self._frameBorderWidth * 2,
+                bottom=bottom_margin)
+
+
+class RoundedFrame(_AbstractFrame):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._heightPercent: float = 0.7
+
+    def _drawFrame(self, painter: QPainter, rect: QRect):
+        path = QPainterPath()
+        path.moveTo(self._frameBorderWidth, self._frameBorderWidth)
+        path.lineTo(rect.topRight())
+
+        height = rect.height() * self._heightPercent
+        path.lineTo(rect.bottomRight().x(), height)
+        path.quadTo(rect.center().x(), rect.bottom() - self._frameBorderWidth, rect.bottomLeft().x(), height)
         path.lineTo(rect.bottomLeft().x(), height)
         path.lineTo(rect.topLeft())
 
