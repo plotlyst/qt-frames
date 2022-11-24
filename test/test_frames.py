@@ -7,3 +7,4 @@ def test_frames(qtbot):
     frame.show()
 
     qtbot.wait_exposed(frame)
+    qtbot.wait(100)
