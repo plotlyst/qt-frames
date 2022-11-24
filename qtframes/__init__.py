@@ -29,6 +29,10 @@ class _AbstractFrame(QWidget):
         self._brushColor = color
         self.update()
 
+    def widget(self):
+        if self.layout().count():
+            return self.layout().itemAt(0).widget()
+
     def setWidget(self, widget):
         clear_layout(self)
         self.layout().addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
