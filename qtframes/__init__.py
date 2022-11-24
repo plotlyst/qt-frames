@@ -1,7 +1,7 @@
 from qthandy import vbox, clear_layout, margins
 from qtpy.QtCore import Qt, QRect
 from qtpy.QtGui import QPainter, QPen, QBrush, QPainterPath, QPaintEvent, QResizeEvent
-from qtpy.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget, QSizePolicy
 
 
 class _AbstractFrame(QWidget):
@@ -75,6 +75,7 @@ class Frame(_AbstractFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._heightPercent: float = 0.8
+        self.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
 
     def _drawFrame(self, painter: QPainter, rect: QRect):
         path = QPainterPath()
