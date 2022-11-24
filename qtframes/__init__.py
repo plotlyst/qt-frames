@@ -32,6 +32,8 @@ class _AbstractFrame(QWidget):
         self._calculateMargins()
 
     def paintEvent(self, event: QPaintEvent) -> None:
+        if event.rect() != self.rect():
+            return super(_AbstractFrame, self).paintEvent(event)
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
