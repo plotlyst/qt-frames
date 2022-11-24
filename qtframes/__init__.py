@@ -79,7 +79,7 @@ class Frame(_AbstractFrame):
     def _drawFrame(self, painter: QPainter, rect: QRect):
         path = QPainterPath()
         path.moveTo(self._frameBorderWidth, self._frameBorderWidth)
-        path.lineTo(rect.topRight())
+        path.lineTo(rect.topRight().x(), rect.topRight().y())
 
         height = rect.height() * self._heightPercent
         path.lineTo(rect.bottomRight().x(), height)
@@ -107,7 +107,7 @@ class RoundedFrame(_AbstractFrame):
     def _drawFrame(self, painter: QPainter, rect: QRect):
         path = QPainterPath()
         path.moveTo(self._frameBorderWidth, self._frameBorderWidth)
-        path.lineTo(rect.topRight())
+        path.lineTo(rect.topRight().x(), rect.topRight().y())
 
         height = rect.height() * self._heightPercent
         path.lineTo(rect.bottomRight().x(), height)
