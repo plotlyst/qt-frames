@@ -10,7 +10,17 @@ class _AbstractFrame(QWidget):
         self._frameBorderWidth: int = 5
         self._nestedFrameBorderWidth: int = 2
 
+        self._frameColor = Qt.GlobalColor.darkBlue
+        self._brushColor = Qt.GlobalColor.transparent
+
         vbox(self, self._frameBorderWidth, 0)
+
+    def frameColor(self):
+        return self._frameColor
+
+    def setFrameColor(self, color):
+        self._frameColor = color
+        self.update()
 
     def setWidget(self, widget):
         clear_layout(self)
@@ -29,9 +39,9 @@ class _AbstractFrame(QWidget):
 
         pen = QPen()
         pen.setWidth(self._frameBorderWidth)
-        pen.setColor(Qt.GlobalColor.darkBlue)
+        pen.setColor(self._frameColor)
         painter.setPen(pen)
-        painter.setBrush(Qt.GlobalColor.white)
+        painter.setBrush(self._brushColor)
 
         rect = event.rect()
         rect.setX(self._frameBorderWidth)

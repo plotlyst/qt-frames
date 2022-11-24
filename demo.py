@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         self.widget = QWidget(self)
         self.setCentralWidget(self.widget)
         vbox(self.widget, 5)
-        
+
         frame = Frame()
         frame.setWidget(QTextEdit())
         self.widget.layout().addWidget(frame)
