@@ -22,6 +22,13 @@ class _AbstractFrame(QWidget):
         self._frameColor = color
         self.update()
 
+    def backgroundColor(self):
+        return self._brushColor
+
+    def setBackgroundColor(self, color):
+        self._brushColor = color
+        self.update()
+
     def setWidget(self, widget):
         clear_layout(self)
         self.layout().addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
