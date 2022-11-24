@@ -91,7 +91,7 @@ class Frame(_AbstractFrame):
 
     def _calculateMargins(self):
         if self.height():
-            bottom_margin = self.height() * (1 - self._heightPercent) + self._frameBorderWidth * 2
+            bottom_margin = int(self.height() * (1 - self._heightPercent) + self._frameBorderWidth * 2)
         else:
             bottom_margin = self._frameBorderWidth
 
