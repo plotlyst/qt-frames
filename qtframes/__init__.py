@@ -15,6 +15,7 @@ class _AbstractFrame(QWidget):
         self._widget = None
 
         vbox(self, self._frameBorderWidth, 0)
+        self.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
 
     def frameColor(self):
         return self._frameColor
@@ -92,7 +93,6 @@ class Frame(_AbstractFrame):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._heightPercent: float = 0.8
-        self.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
 
     def _drawFrame(self, painter: QPainter, rect: QRect):
         path = QPainterPath()
