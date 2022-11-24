@@ -1,5 +1,5 @@
 from qthandy import vbox, clear_layout, margins
-from qtpy.QtCore import Qt, QRect
+from qtpy.QtCore import Qt, QRect, QSize
 from qtpy.QtGui import QPainter, QPen, QBrush, QPainterPath, QPaintEvent, QResizeEvent
 from qtpy.QtWidgets import QWidget, QSizePolicy
 
@@ -9,9 +9,10 @@ class _AbstractFrame(QWidget):
         super().__init__(parent)
         self._frameBorderWidth: int = 5
         self._nestedFrameBorderWidth: int = 2
-
         self._frameColor = Qt.GlobalColor.darkBlue
         self._brushColor = Qt.GlobalColor.transparent
+
+        self._widget = None
 
         vbox(self, self._frameBorderWidth, 0)
 
@@ -31,12 +32,19 @@ class _AbstractFrame(QWidget):
 
     def setWidget(self, widget):
         clear_layout(self)
+        self._widget = widget
         self.layout().addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
         self._calculateMargins()
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
         self._calculateMargins()
+
+    def sizeHint(self) -> QSize:
+        if self._widget:
+            return self._widget.sizeHint()
+        else:
+            return super(_AbstractFrame, self).sizeHint()
 
     def paintEvent(self, event: QPaintEvent) -> None:
         if event.rect() != self.rect():
