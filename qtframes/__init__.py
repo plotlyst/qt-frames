@@ -85,7 +85,7 @@ class Frame(_AbstractFrame):
         path.lineTo(rect.bottomRight().x(), height)
         path.lineTo(rect.center().x(), rect.bottom() - self._frameBorderWidth)
         path.lineTo(rect.bottomLeft().x(), height)
-        path.lineTo(rect.topLeft().toPointF())
+        path.lineTo(rect.topLeft().x(), rect.topLeft().y())
 
         painter.drawPath(path)
 
@@ -113,7 +113,7 @@ class RoundedFrame(_AbstractFrame):
         path.lineTo(rect.bottomRight().x(), height)
         path.quadTo(rect.center().x(), rect.bottom() - self._frameBorderWidth, rect.bottomLeft().x(), height)
         path.lineTo(rect.bottomLeft().x(), height)
-        path.lineTo(rect.topLeft().toPointF())
+        path.lineTo(rect.topLeft().x(), rect.topLeft().y())
 
         painter.drawPath(path)
 
