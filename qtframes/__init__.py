@@ -39,8 +39,6 @@ class _AbstractFrame(QWidget):
         self._calculateMargins()
 
     def paintEvent(self, event: QPaintEvent) -> None:
-        if event.rect() != self.rect():
-            return
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
@@ -52,7 +50,7 @@ class _AbstractFrame(QWidget):
         painter.setPen(pen)
         painter.setBrush(self._brushColor)
 
-        rect = event.rect()
+        rect = self.rect()
         rect.setX(self._frameBorderWidth)
         rect.setY(self._frameBorderWidth)
         rect.setWidth(rect.width() - self._frameBorderWidth)
@@ -64,7 +62,7 @@ class _AbstractFrame(QWidget):
         pen.setWidth(self._nestedFrameBorderWidth)
         pen.setColor(Qt.GlobalColor.white)
         painter.setPen(pen)
-        nested_rect = event.rect()
+        nested_rect = self.rect()
         nested_rect.setX(self._frameBorderWidth)
         nested_rect.setY(self._frameBorderWidth)
         nested_rect.setWidth(nested_rect.width() - self._frameBorderWidth)
