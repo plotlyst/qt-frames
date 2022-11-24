@@ -5,4 +5,5 @@ def test_frames(qtbot):
     frame = Frame()
     qtbot.addWidget(frame)
     frame.show()
-    qtbot.wait(100)
+
+    qtbot.wait_exposed(frame)
