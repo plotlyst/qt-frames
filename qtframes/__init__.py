@@ -62,6 +62,8 @@ class _AbstractFrame(QWidget):
         nested_rect.setHeight(nested_rect.height() - self._frameBorderWidth)
         self._drawFrame(painter, nested_rect)
 
+        painter.end()
+
     def _calculateMargins(self):
         pass
 
