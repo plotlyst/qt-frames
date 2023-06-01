@@ -133,9 +133,6 @@ class Frame(_AbstractFrame):
         else:
             bottom_margin = self._frameBorderWidth
 
-        # print(f'left {self._frameBorderWidth * 2}')
-        print(f'{bottom_margin}')
-
         m = self._frameBorderWidth + self._padding
         margins(self, m, m, m,
                 bottom=bottom_margin)
