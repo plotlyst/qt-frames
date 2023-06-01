@@ -1,7 +1,8 @@
 import sys
 
-from qthandy import vbox
-from qtpy.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QTextEdit
+import qtawesome
+from qthandy import vbox, transparent
+from qtpy.QtWidgets import QMainWindow, QApplication, QWidget, QLabel, QTextEdit, QToolButton
 
 from qtframes import Frame, RoundedFrame
 
@@ -21,6 +22,15 @@ class MainWindow(QMainWindow):
         roundedFrame = RoundedFrame()
         roundedFrame.setWidget(QLabel('Test label inside the frame'))
         self.widget.layout().addWidget(roundedFrame)
+
+        frame = Frame()
+        frame.setNestedFrameEnabled(False)
+        frame.setOuterFrameWidth(3)
+        btn = QToolButton()
+        transparent(btn)
+        btn.setIcon(qtawesome.icon('ei.adult'))
+        frame.setWidget(btn)
+        self.widget.layout().addWidget(frame)
 
 
 if __name__ == '__main__':

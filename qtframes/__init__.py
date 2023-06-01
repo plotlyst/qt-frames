@@ -9,6 +9,8 @@ class _AbstractFrame(QWidget):
         super().__init__(parent)
         self._frameBorderWidth: int = 5
         self._nestedFrameBorderWidth: int = 2
+        self._nestedFrameEnabled: bool = False
+        self._padding: int = 2
         self._frameColor = Qt.GlobalColor.darkBlue
         self._brushColor = Qt.GlobalColor.transparent
 
@@ -29,13 +31,36 @@ class _AbstractFrame(QWidget):
         self._brushColor = color
         self.update()
 
+    def setOuterFrameWidth(self, width: int):
+        self._frameBorderWidth = width
+        self._calculateMargins()
+        self.update()
+
+    def outerFrameWidth(self) -> int:
+        return self._frameBorderWidth
+
+    def setPadding(self, padding: int):
+        self._padding = padding
+        self._calculateMargins()
+        self.update()
+
+    def padding(self) -> int:
+        return self._padding
+
+    def setNestedFrameEnabled(self, enabled: bool):
+        self._nestedFrameEnabled = enabled
+        self.update()
+
+    def nestedFrameEnabled(self) -> bool:
+        return self._nestedFrameEnabled
+
     def widget(self):
         if self.layout().count():
             return self.layout().itemAt(0).widget()
 
     def setWidget(self, widget):
         clear_layout(self)
-        self.layout().addWidget(widget, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.layout().addWidget(widget)
         self._calculateMargins()
 
     def resizeEvent(self, event: QResizeEvent) -> None:
@@ -61,17 +86,19 @@ class _AbstractFrame(QWidget):
         rect.setHeight(rect.height() - self._frameBorderWidth)
         self._drawFrame(painter, rect)
 
-        painter.setBrush(QBrush())
-        pen = QPen()
-        pen.setWidth(self._nestedFrameBorderWidth)
-        pen.setColor(Qt.GlobalColor.white)
-        painter.setPen(pen)
-        nested_rect = self.rect()
-        nested_rect.setX(self._frameBorderWidth)
-        nested_rect.setY(self._frameBorderWidth)
-        nested_rect.setWidth(nested_rect.width() - self._frameBorderWidth)
-        nested_rect.setHeight(nested_rect.height() - self._frameBorderWidth)
-        self._drawFrame(painter, nested_rect)
+        if self._nestedFrameEnabled:
+            painter.setBrush(QBrush())
+            pen = QPen()
+            pen.setWidth(self._nestedFrameBorderWidth)
+            pen.setColor(Qt.GlobalColor.white)
+            painter.setPen(pen)
+
+            nested_rect = self.rect()
+            nested_rect.setX(self._frameBorderWidth)
+            nested_rect.setY(self._frameBorderWidth)
+            nested_rect.setWidth(nested_rect.width() - self._frameBorderWidth)
+            nested_rect.setHeight(nested_rect.height() - self._frameBorderWidth)
+            self._drawFrame(painter, nested_rect)
 
         painter.end()
 
@@ -106,7 +133,11 @@ class Frame(_AbstractFrame):
         else:
             bottom_margin = self._frameBorderWidth
 
-        margins(self, self._frameBorderWidth * 2, self._frameBorderWidth * 2, self._frameBorderWidth * 2,
+        # print(f'left {self._frameBorderWidth * 2}')
+        print(f'{bottom_margin}')
+
+        m = self._frameBorderWidth + self._padding
+        margins(self, m, m, m,
                 bottom=bottom_margin)
 
 
